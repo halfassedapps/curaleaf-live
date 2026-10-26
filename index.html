@@ -68,7 +68,7 @@ details#flt>.in{padding:2px 12px 8px}
 </style></head><body>
 <h1>Curaleaf Live</h1>
 <div class="bar"><label>Store <select id="store" aria-label="Store"></select></label></div>
-<p><span id="sname">Harrisburg</span> flower menu, pulled fresh from Curaleaf each time you open it (saved on this device for 6 hours). Added shows the date this product first showed up in our daily checks ("by Oct 11" means it was already there when tracking began; Curaleaf does not publish an add date). Daily checks cover Harrisburg only; at other stores Added is the date this device first saw the product, marked "(seen)". Tap a column header to sort, tap again to reverse. Prices include the first-visit 45% off that Curaleaf's cards show, so they may be lower than what you pay as a returning patient. Price is the lowest across sizes.</p>
+<p><span id="sname">Harrisburg</span> flower menu, pulled fresh from Curaleaf each time you open it (saved on this device for 6 hours). Added shows the date this product first showed up in our daily checks ("by" a date means it was already there when tracking began at that store: Oct 11 at Harrisburg, later at the others; Curaleaf does not publish an add date). "(seen)" marks a product our daily checks haven't caught yet, dated when this device first saw it. Tap a column header to sort, tap again to reverse. Prices include the first-visit 45% off that Curaleaf's cards show, so they may be lower than what you pay as a returning patient. Price is the lowest across sizes.</p>
 <div id="status" role="status">Starting…</div><progress id="pg" hidden></progress>
 <div id="app" hidden><div class="msort"><select id="ms" aria-label="Sort by"><option value="">Sort: terpenes (default)</option><option value="thc">Sort: THC %</option><option value="terps">Sort: Terps %</option><option value="price">Sort: Price</option><option value="added">Sort: Added</option><option value="brand">Sort: Brand</option><option value="product">Sort: Product</option><option value="type">Sort: Type</option></select><button type="button" id="md" aria-label="Reverse sort">&#8645;</button></div><details id="flt" open><summary>Filters and sort rules</summary><div class="in"><div class="chips" id="forms" role="group" aria-label="Filter by form"><span>Form</span></div><div class="chips" id="types" role="group" aria-label="Filter by type"><span>Type</span></div><div class="chips" id="sizes" role="group" aria-label="Filter by size"><span>Size</span></div><div class="bar"><button id="add" type="button">+ Add sort / filter</button><label>Combine <select id="mode"><option value="pri">in priority order (1st rule first, ties go to the next)</option><option value="bal">balanced (best combined rank across rules)</option></select></label><button id="ex" type="button">Example: high limonene + low myrcene</button><button id="rst" type="button">Reset</button></div><div id="rules"></div><p id="note" style="margin:0 0 10px"></p></div></details><div class="w" id="tw"></div></div>
 <script>window.initTable=function(){
@@ -253,12 +253,14 @@ function fetchAll(){
 var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 function fmt(d){var p=d.split('-');return MON[+p[1]-1]+' '+(+p[2])}
 function today(){var d=new Date();return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)}
-var KNOWN=null,LOC={};
+var KNOWN=null,LOC={},SF=STORE==='153'?FS:null;
+var FSP=fetch('data/firstseen-'+STORE+'.json',{cache:'no-cache'}).then(function(r){return r.ok?r.json():null}).then(function(j){if(j&&j.base&&j.first&&j.known)SF=j}).catch(function(){});
+function show(c,note){FSP.then(function(){render(c,note)})}
 function addedFor(r){var k=r.brand+'||'+r.name;
- if(STORE==='153'){
- if(FS.first[k])return [FS.first[k],fmt(FS.first[k])];
- if(!KNOWN){KNOWN={};FS.known.forEach(function(x){KNOWN[x]=1})}
- if(KNOWN[k])return [FS.base,'by '+fmt(FS.base)]}
+ if(SF){
+ if(SF.first[k])return [SF.first[k],fmt(SF.first[k])];
+ if(!KNOWN){KNOWN={};SF.known.forEach(function(x){KNOWN[x]=1})}
+ if(KNOWN[k])return [SF.base,'by '+fmt(SF.base)]}
  if(!LOC[k])LOC[k]=today();
  return [LOC[k],fmt(LOC[k])+' (seen)']}
 function render(c,note){
@@ -280,12 +282,12 @@ function render(c,note){
 var THEAD="<tr><th data-col=\"rank\" data-sort=\"reset\">#</th><th data-col=\"brand\" data-sort=\"s\" data-first=\"asc\">Brand</th><th data-col=\"product\" data-sort=\"s\" data-first=\"asc\">Product</th><th data-col=\"type\" data-sort=\"s\" data-first=\"asc\">Type</th><th data-col=\"sizes\" data-sort=\"n\" data-first=\"asc\">Sizes</th><th data-col=\"price\" data-sort=\"n\" data-first=\"asc\">Price</th><th data-col=\"was\" data-sort=\"n\" data-first=\"asc\">Was</th><th data-col=\"deal\" data-sort=\"s\" data-first=\"asc\">Deal</th><th data-col=\"added\" data-sort=\"s\" data-first=\"desc\">Added</th><th data-col=\"thc\" data-sort=\"n\" data-first=\"desc\">THC %</th><th data-col=\"terps\" data-sort=\"n\" data-first=\"desc\">Terps %</th><th data-col=\"tops\">Top terpenes</th></tr>";
 function start(){
  var c=getCache();
- if(c&&Date.now()-c.t<TTL){render(c,'saved copy');return}
+ if(c&&Date.now()-c.t<TTL){show(c,'saved copy');return}
  setStatus('Loading the menu…');pg.hidden=false;pg.removeAttribute('value');
  try{if(navigator.wakeLock)navigator.wakeLock.request('screen').catch(function(){})}catch(e){}
- fetchAll().then(function(n){putCache(n);render(n,n.fails?n.fails+' lab lookups failed':'')}).catch(function(e){
+ fetchAll().then(function(n){putCache(n);show(n,n.fails?n.fails+' lab lookups failed':'')}).catch(function(e){
   pg.hidden=true;
-  if(c){render(c,'could not refresh, showing older copy')}
+  if(c){show(c,'could not refresh, showing older copy')}
   else setStatus('Could not load the Curaleaf menu ('+esc(e.message)+'). Check your connection. <button type="button" id="rt">Try again</button>',true),document.getElementById('rt').addEventListener('click',function(){location.reload()});
  });
 }
