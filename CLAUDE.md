@@ -6,9 +6,10 @@ Goal: publish `index.html` on GitHub Pages so Jeff can open it on his iPhone and
 - One self-contained static HTML file, no build step, no server. Everything runs in the browser.
 - On open it calls Curaleaf's Sweed API directly (CORS is open; verified from a foreign origin):
   `POST https://web-ui-curaleaf.sweedpos.com/_api/proxy/Products/GetProductList` and `.../Products/GetExtendedLabdata`, header `storeid: 153` (Harrisburg PA).
-- Caches the result in localStorage (`curaleafLive.v1`) for 6 hours; Refresh button clears it.
+- Store picker covers the 18 PA stores (Sweed store IDs 145-162; 144 "Curaleaf PA" is a dead duplicate with no menu). Choice saved in localStorage `curaleafLive.store`, default 153. Flower category 1287 is the same at every PA store. Store list came from `Store/GetStoreInfo` (header `storeid`), which returns name, address, and the curaleaf.com `url` slug.
+- Caches the result in localStorage (`curaleafLive.v1`, plus `.<storeid>` suffix for non-Harrisburg stores) for 6 hours; Refresh button clears it.
 - Phone layout (<=640px): each product is a card; sort dropdown + collapsed filters. Verified at 390px in desktop Chromium with a mocked API, NOT yet on a real iPhone and NOT yet against the live API from a hosted origin.
-- "Added" date: Curaleaf's API has no add date. Dates come from our own daily snapshots (first seen). Items present when tracking began (2026-10-11) show "by Oct 11". The map is embedded in the page (`var FS=...`). Unknown items get today's date + "(seen)", stored per device in localStorage (`curaleafLive.seen`).
+- "Added" date: Curaleaf's API has no add date. Dates come from our own daily snapshots (first seen). Items present when tracking began (2026-10-11) show "by Oct 11". The map is embedded in the page (`var FS=...`). Unknown items get today's date + "(seen)", stored per device in localStorage (`curaleafLive.seen`, `.<storeid>` suffix for other stores). The embedded map is Harrisburg-only; other stores use only the per-device "(seen)" dates.
 - Prices shown include the first-visit 45% promo: min(promo or list, 0.55*list).
 
 ## Tasks
