@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Curaleaf Live"><meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#f6f7f4">
+<title>Curaleaf Live</title>
+<style>
+:root{--bg:#f6f7f4;--fg:#1d2420;--mut:#5d6a62;--line:#d5dbd4;--head:#e6ebe4;--flag:#fff3b0;--link:#1f6b45;--bad:#a1291b}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#141a16;--fg:#e6ece7;--mut:#9aa8a0;--line:#2c3630;--head:#1f2923;--flag:#4a4310;--link:#7fd1a3;--bad:#ff8f7e;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#141a16;--fg:#e6ece7;--mut:#9aa8a0;--line:#2c3630;--head:#1f2923;--flag:#4a4310;--link:#7fd1a3;--bad:#ff8f7e;color-scheme:dark}
+html{color-scheme:light}body{background:var(--bg);color:var(--fg);font:14px/1.45 system-ui,sans-serif;padding-block:20px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1{font-size:1.4rem;margin:0 0 6px;text-wrap:balance}p{color:var(--mut);max-width:65ch;margin:0 0 14px}
+.w{overflow-x:auto}table{border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums;min-width:720px}
+th,td{padding:5px 8px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}th{background:var(--head);position:sticky;top:0}
+th[data-sort]{cursor:pointer;user-select:none}th[data-sort]:hover{text-decoration:underline}th:focus-visible,select:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--link);outline-offset:1px}
+th .ar{display:inline-block;width:1em;color:var(--link)}
+tr.flag td{background:var(--flag)}
+.bar{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin:0 0 12px}.bar label{color:var(--mut)}select,button{font:inherit;color:var(--fg);background:var(--head);border:1px solid var(--line);border-radius:4px;padding:5px 8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin:0 0 12px}.chips>span{color:var(--mut)}.chips label{display:inline-flex;gap:5px;align-items:center;border:1px solid var(--line);border-radius:4px;padding:3px 8px;background:var(--head);cursor:pointer}.chips input{accent-color:var(--link);margin:0}
+.sel{display:none}table.on .sel{display:table-cell}a{color:var(--link)}
+.rule{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;margin:0 0 6px}.rule input{width:80px;font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:4px 6px}.rule label{color:var(--mut)}
+
+[hidden]{display:none!important}
+h1{margin:0 0 4px}
+#status{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;margin:0 0 12px;color:var(--mut)}
+#status.err{color:var(--bad)}
+progress{width:100%;height:6px;accent-color:var(--link)}
+.w{max-height:72vh;overflow:auto;border:1px solid var(--line);border-radius:6px}
+.w table{border-bottom:0}
+th{z-index:1}
+td:nth-child(3){white-space:normal;min-width:11em}
+@media (max-width:520px){body{font-size:15px}.chips label,button,select{padding:7px 10px}}
+
+details#flt{margin:0 0 12px;border:1px solid var(--line);border-radius:8px;background:var(--head)}
+details#flt>summary{cursor:pointer;padding:10px 12px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:8px}
+details#flt>summary::after{content:"\25BE";color:var(--mut)}details#flt[open]>summary::after{content:"\25B4"}
+details#flt>summary::-webkit-details-marker{display:none}
+details#flt>.in{padding:2px 12px 8px}
+.msort{display:none;gap:8px;margin:0 0 10px}.msort select{flex:1;min-width:0}
+@media (max-width:640px){
+ body{font-size:16px;padding-block:12px}
+ h1{font-size:1.35rem}
+ select,button,input{font-size:16px;min-height:42px}
+ .chips label{min-height:38px;padding:6px 12px;border-radius:999px}
+ .rule input{width:96px}
+ .msort{display:flex}
+ .w{max-height:none;overflow:visible;border:0;border-radius:0}
+ table,tbody{display:block;min-width:0;width:100%}
+ tr:first-child{display:none}
+ tbody tr{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;padding:12px 4px;border-bottom:1px solid var(--line);position:relative}
+ td{display:block;border:0;padding:0;white-space:normal;background:none}
+ td:empty{display:none}
+ tr.flag{background:var(--flag)}
+ td:nth-child(1){display:none}
+ td:nth-child(2){order:1;flex:0 0 100%;color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+ td:nth-child(3){order:2;flex:1 1 0;min-width:0;font-weight:600;font-size:16.5px;line-height:1.3}
+ td:nth-child(6){order:3;flex:0 0 auto;font-size:19px;font-weight:700;margin-left:auto}
+ td:nth-child(4),td:nth-child(5),td:nth-child(7),td:nth-child(8),td:nth-child(9),td:nth-child(10),td:nth-child(11){order:4;font-size:13px;padding:3px 9px;border-radius:999px;background:var(--head);border:1px solid var(--line)}
+ td:nth-child(4){font-weight:600}
+ td:nth-child(7){text-decoration:line-through;color:var(--mut)}td:nth-child(7)::before{content:"was ";text-decoration:none;display:inline-block}
+ td:nth-child(8){color:var(--link)}
+ td:nth-child(9)::before{content:"Added ";color:var(--mut)}td:nth-child(10)::before{content:"THC ";color:var(--mut)}td:nth-child(11)::before{content:"Terps ";color:var(--mut)}
+ td:nth-child(12){order:5;flex:0 0 100%;color:var(--mut);font-size:13px}
+ td.sel,table.on td.sel{order:6;flex:0 0 100%;font-size:13px;color:var(--fg)}
+ td.sel{display:none}table.on td.sel{display:block}
+}
+</style></head><body>
+<h1>Curaleaf Live</h1>
+<p>Harrisburg flower menu, pulled fresh from Curaleaf each time you open it (saved on this device for 6 hours). Added shows the date this product first showed up in our daily checks ("by Oct 11" means it was already there when tracking began; Curaleaf does not publish an add date). Tap a column header to sort, tap again to reverse. Prices include the first-visit 45% off that Curaleaf's cards show, so they may be lower than what you pay as a returning patient. Price is the lowest across sizes.</p>
+<div id="status" role="status">Starting…</div><progress id="pg" hidden></progress>
+<div id="app" hidden><div class="msort"><select id="ms" aria-label="Sort by"><option value="">Sort: terpenes (default)</option><option value="thc">Sort: THC %</option><option value="terps">Sort: Terps %</option><option value="price">Sort: Price</option><option value="added">Sort: Added</option><option value="brand">Sort: Brand</option><option value="product">Sort: Product</option><option value="type">Sort: Type</option></select><button type="button" id="md" aria-label="Reverse sort">&#8645;</button></div><details id="flt" open><summary>Filters and sort rules</summary><div class="in"><div class="chips" id="forms" role="group" aria-label="Filter by form"><span>Form</span></div><div class="chips" id="types" role="group" aria-label="Filter by type"><span>Type</span></div><div class="chips" id="sizes" role="group" aria-label="Filter by size"><span>Size</span></div><div class="bar"><button id="add" type="button">+ Add sort / filter</button><label>Combine <select id="mode"><option value="pri">in priority order (1st rule first, ties go to the next)</option><option value="bal">balanced (best combined rank across rules)</option></select></label><button id="ex" type="button">Example: high limonene + low myrcene</button><button id="rst" type="button">Reset</button></div><div id="rules"></div><p id="note" style="margin:0 0 10px"></p></div></details><div class="w" id="tw"></div></div>
+<script>window.initTable=function(){
+var t=document.getElementById('t'),tb=t.tBodies[0],note=document.getElementById('note'),box=document.getElementById('rules'),szBox=document.getElementById('sizes'),formBox=document.getElementById('forms'),typeBox=document.getElementById('types');
+var hr=tb.rows[0],C={};
+[].forEach.call(hr.cells,function(h,i){if(h.dataset.col)C[h.dataset.col]=i});
+var rows=[].slice.call(tb.rows).filter(function(r){return r.cells[0].tagName==='TD'});
+var th=document.createElement('th');th.textContent='Your criteria';th.className='sel';hr.appendChild(th);
+var counts={},sizeCount={},formCount={},typeCount={},hs=null,chosen={},chForm={},chType={};
+var FORMS={'whole-flower':'Whole flower','ground-flower':'Ground flower','small-buds':'Small buds','smalls':'Small buds','small-flower':'Small buds','mixed-buds':'Mixed buds'};
+function formOf(r){var a=r.cells[C.product].querySelector('a'),h=a?a.getAttribute('href'):'',m=h.match(/\/flower-1287\/(.*?)-(?:sativa|hybrid|indica)-/),k=m?m[1]:'',f=FORMS[k]||(k?k.replace(/-/g,' ').replace(/^./,function(c){return c.toUpperCase()}):'Other');
+ if(f==='Ground flower'&&/infused/i.test(r.cells[C.product].textContent))f='Infused ground flower';return f}
+function num(s){var v=parseFloat(String(s).replace(/[^0-9.]/g,''));return isNaN(v)?null:v}
+rows.forEach(function(r,i){
+ r._i=i;r._m={};var bb=r.cells[0].querySelector('b');r._b=bb?bb.outerHTML+' ':'';
+ r.cells[C.tops].textContent.split(';').forEach(function(s){var m=s.trim().match(/^(.*?)\s+([0-9.]+)$/);if(m){r._m[m[1]]=parseFloat(m[2]);counts[m[1]]=(counts[m[1]]||0)+1}});
+ r._m['Total terpenes %']=parseFloat(r.cells[C.terps].textContent)||0;
+ r._m['Total THC %']=parseFloat(r.cells[C.thc].textContent)||0;
+ r._m['Price ($)']=num(r.cells[C.price].textContent)||0;
+ r._sz=r.cells[C.sizes].textContent.split('/').map(function(s){return s.trim()}).filter(Boolean);
+ r._sz.forEach(function(s){sizeCount[s]=(sizeCount[s]||0)+1});
+ r._form=formOf(r);formCount[r._form]=(formCount[r._form]||0)+1;
+ r._type=r.cells[C.type].textContent.trim()||'Unknown';typeCount[r._type]=(typeCount[r._type]||0)+1;
+ var sn=r._sz.map(function(s){return num(s)}).filter(function(v){return v!=null});
+ r._k={brand:r.cells[C.brand].textContent.toLowerCase(),product:r.cells[C.product].textContent.toLowerCase(),type:r.cells[C.type].textContent.toLowerCase()||null,
+  sizes:sn.length?Math.min.apply(null,sn):null,price:num(r.cells[C.price].textContent),was:num(r.cells[C.was].textContent),deal:r.cells[C.deal].textContent.toLowerCase()||null,
+  added:r.cells[C.added].dataset.v||null,thc:num(r.cells[C.thc].textContent),terps:num(r.cells[C.terps].textContent)};
+ var td=document.createElement('td');td.className='sel';r.appendChild(td);r._s=td;
+});
+var keys=Object.keys(counts).sort();
+var opts=['Total terpenes %','Total THC %','Price ($)'].concat(keys);
+function val(r,k){var v=r._m[k];return v==null?0:v}
+function chips(box,cnt,state,order){
+ Object.keys(cnt).sort(order).forEach(function(v){
+  var l=document.createElement('label'),i=document.createElement('input');i.type='checkbox';i.value=v;i.id=box.id+'-'+v.replace(/[^a-z0-9]/gi,'_');
+  i.addEventListener('change',function(){if(i.checked)state[v]=1;else delete state[v];go()});
+  l.appendChild(i);l.appendChild(document.createTextNode(v+' ('+cnt[v]+')'));box.appendChild(l);
+ });
+}
+function byCount(c){return function(a,b){return c[b]-c[a]||(a<b?-1:1)}}
+chips(formBox,formCount,chForm,byCount(formCount));
+chips(typeBox,typeCount,chType,function(a,b){var o=['Sativa','Hybrid','Indica'],x=o.indexOf(a),y=o.indexOf(b);return (x<0?9:x)-(y<0?9:y)});
+chips(szBox,sizeCount,chosen,function(a,b){return num(a)-num(b)});
+function ruleChanged(){hs=null;go()}
+function addRule(k,dir){
+ var d=document.createElement('div');d.className='rule';
+ var h='<select class="k">'+opts.map(function(o){return '<option>'+o+(counts[o]?' ('+counts[o]+')':'')+'</option>'}).join('')+'</select>';
+ h+='<select class="d"><option value="hi">highest</option><option value="lo">lowest</option><option value="off">no sort, filter only</option></select>';
+ h+='<label>min <input class="mn" type="number" step="any" placeholder="any"></label><label>max <input class="mx" type="number" step="any" placeholder="any"></label><button type="button" class="x" title="Remove">&times;</button>';
+ d.innerHTML=h;box.appendChild(d);
+ var s=d.querySelector('.k');if(k){for(var i=0;i<opts.length;i++)if(opts[i]===k)s.selectedIndex=i}
+ if(dir)d.querySelector('.d').value=dir;
+ d.addEventListener('input',ruleChanged);d.addEventListener('change',ruleChanged);
+ d.querySelector('.x').addEventListener('click',function(){box.removeChild(d);ruleChanged()});
+ return d;
+}
+function rules(){return [].slice.call(box.children).map(function(d){
+ var k=d.querySelector('.k').value.replace(/ \(\d+\)$/,'');
+ var mn=parseFloat(d.querySelector('.mn').value),mx=parseFloat(d.querySelector('.mx').value);
+ return {k:k,dir:d.querySelector('.d').value,mn:isNaN(mn)?null:mn,mx:isNaN(mx)?null:mx};
+})}
+function cmpCol(a,b){
+ var x=a._k[hs.col],y=b._k[hs.col];
+ if(x==null&&y==null)return 0;if(x==null)return 1;if(y==null)return -1;
+ var d=x<y?-1:x>y?1:0;return hs.dir==='asc'?d:-d;
+}
+function go(){
+ var R=rules(),mode=document.getElementById('mode').value,pick=Object.keys(chosen),pf=Object.keys(chForm),pt=Object.keys(chType);
+ var vis=rows.filter(function(r){
+  if(pick.length&&!r._sz.some(function(s){return chosen[s]}))return false;
+  if(pf.length&&!chForm[r._form])return false;
+  if(pt.length&&!chType[r._type])return false;
+  return R.every(function(q){var v=val(r,q.k);return (q.mn==null||v>=q.mn)&&(q.mx==null||v<=q.mx)});
+ });
+ var S=R.filter(function(q){return q.dir!=='off'});
+ if(hs){
+  vis.sort(function(a,b){return cmpCol(a,b)||a._i-b._i});
+ }else if(S.length){
+  if(mode==='bal'){
+   S.forEach(function(q,qi){
+    var a=vis.slice().sort(function(x,y){var d=q.dir==='hi'?val(y,q.k)-val(x,q.k):val(x,q.k)-val(y,q.k);return d||x._i-y._i});
+    a.forEach(function(r,n){r._sc=(qi?r._sc:0)+n});
+   });
+   vis.sort(function(a,b){return a._sc-b._sc||a._i-b._i});
+  }else{
+   vis.sort(function(a,b){
+    for(var i=0;i<S.length;i++){var q=S[i],d=q.dir==='hi'?val(b,q.k)-val(a,q.k):val(a,q.k)-val(b,q.k);if(d)return d}
+    return a._i-b._i;
+   });
+  }
+ }else vis.sort(function(a,b){return a._i-b._i});
+ var vs=new Set(vis);
+ rows.forEach(function(r){r.style.display=vs.has(r)?'':'none'});
+ vis.forEach(function(r,n){tb.appendChild(r);r.cells[0].innerHTML=r._b+(n+1);
+  r._s.textContent=R.map(function(q){return q.k.replace(/ \(.*$/,'')+' '+(r._m[q.k]==null?'0 (not in top 4)':r._m[q.k])}).join(' · ')});
+ t.classList.toggle('on',R.length>0);
+ [].forEach.call(hr.cells,function(h){
+  if(!h.dataset.sort)return;
+  var on=hs&&hs.col===h.dataset.col;
+  h.setAttribute('aria-sort',on?(hs.dir==='asc'?'ascending':'descending'):'none');
+  var a=h.querySelector('.ar');if(a)a.textContent=on?(hs.dir==='asc'?'▲':'▼'):'';
+ });
+ var msg=vis.length+' of '+rows.length+' products shown.';
+ if(hs)msg+=' Sorted by '+hs.name+' ('+(hs.dir==='asc'?'low to high':'high to low')+'); products with no value for it go last. Click # to go back to the rule order.';
+ else msg+=' A terpene not listed in a product’s top 4 counts as 0, so it ranks last for “highest” and first for “lowest”. Products with no THC listed count as 0.';
+ note.textContent=msg;
+}
+[].forEach.call(hr.cells,function(h){
+ if(!h.dataset.sort)return;
+ h.tabIndex=0;h.setAttribute('role','button');
+ var label=h.textContent;h.textContent='';h.appendChild(document.createTextNode(label));
+ var a=document.createElement('span');a.className='ar';a.setAttribute('aria-hidden','true');h.appendChild(a);
+ function act(){
+  var c=h.dataset.col;
+  if(h.dataset.sort==='reset'){hs=null}
+  else if(hs&&hs.col===c){hs={col:c,name:label,dir:hs.dir==='asc'?'desc':'asc'}}
+  else hs={col:c,name:label,dir:h.dataset.first||'asc'};
+  go();
+ }
+ h.addEventListener('click',act);
+ h.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();act()}});
+});
+document.getElementById('add').addEventListener('click',function(){addRule(null,'hi');ruleChanged()});
+document.getElementById('mode').addEventListener('change',ruleChanged);
+document.getElementById('rst').addEventListener('click',function(){
+ box.innerHTML='';document.getElementById('mode').value='pri';hs=null;[chosen,chForm,chType].forEach(function(o){Object.keys(o).forEach(function(k){delete o[k]})});
+ [].forEach.call(document.querySelectorAll('.chips input'),function(i){i.checked=false});go();
+});
+document.getElementById('ex').addEventListener('click',function(){box.innerHTML='';addRule('Limonene','hi');addRule('B-Myrcene','lo');ruleChanged()});
+go();
+};</script>
+<script>
+(function(){var FS={"base":"2026-10-11","first":{"FarmaceuticalRX||Crypto Ground Flower":"2026-10-13","Modern Flower||Shadowberry Whole Flower":"2026-10-13","FarmaceuticalRX||Chem Flyer #3 Infused Ground Flower":"2026-10-13","Modern Flower||Singapore Sling Whole Flower":"2026-10-13","Modern Flower||GSH MNTS Whole Flower":"2026-10-13","FarmaceuticalRX||G.M.O. Infused Ground Flower":"2026-10-13","FarmaceuticalRX||Crypto Whole Flower":"2026-10-13","Modern Flower||Melonade Whole Flower":"2026-10-13","Grassroots||North Wedding Ck Small Buds":"2026-10-15","Grassroots||North Wedding Ck Whole Flower":"2026-10-15","Grassroots||Passport Dro Small Buds":"2026-10-15","Find.||Floral Frost Whole Flower":"2026-10-15","Find.||Frosted SHRBRT Whole Flower":"2026-10-15","Grassroots||Passport Dro Whole Flower":"2026-10-15","Terrapin||Slurrosa #1 Whole Flower":"2026-10-16","Terrapin||Chimera #3 Whole Flower":"2026-10-16","Terrapin||Sour Alien OG Whole Flower":"2026-10-16","Terrapin||Jack's Clone Infused Ground Flower":"2026-10-16","Terrapin||Cape Leche Whole Flower":"2026-10-16","Terrapin||Lemon G Ratioed Whole Flower":"2026-10-16","Supply||Black Maple Ground Flower":"2026-10-17","Supply||Gelonade Smthie Infused Ground Flower":"2026-10-17","Terrapin||Key Lime Larry Whole Flower":"2026-10-17","Supply||Black Maple Small Buds":"2026-10-17","Supply||Bob Hope Ground Flower":"2026-10-17","Cresco||Lime Sorbet Whole Flower":"2026-10-17","Supply||GMO Pop Small Buds":"2026-10-17","Supply||Crown Small Buds":"2026-10-17","Supply||Gush Mnts Small Buds":"2026-10-17","Mood||Prime Octane Ground Flower":"2026-10-18","Backyard||Lemon Nova Whole Flower":"2026-10-18","Mood||Lemon Lime Octane Ground Flower":"2026-10-18","Mood||Harry Green Ground Flower":"2026-10-18","Mood||Snail Grease Ground Flower":"2026-10-18","INSA||Mendo Glue Whole Flower":"2026-10-18","Mood||Iced Widow Ground Flower":"2026-10-18","Alien Labs||Xeno Whole Flower":"2026-10-18","Belushi's Farm||HIBISCUS Ground Flower":"2026-10-18","Backyard||Fermented Grape Whole Flower":"2026-10-18","Old Pal||Lemon Lime Octane Ground Flower":"2026-10-19","Old Pal||Cottonmouth Kisses Ground Flower":"2026-10-19","Old Pal||Mystery Gas Ground Flower":"2026-10-19","Old Pal||Citrus Mistress Ground Flower":"2026-10-19","Old Pal||Lemon Lime Terpi Pine Ground Flower":"2026-10-19","Old Pal||Lemon Nova Ground Flower":"2026-10-19","Solventless by Vytal||Black Maple #22 Infused Ground Flower":"2026-10-19","Old Pal||Dank Dunk Ground Flower":"2026-10-19","Calypso||Zoap Whole Flower":"2026-10-21","Calypso||Blue Mnt Royale Whole Flower":"2026-10-21","Calypso||Vegan Chz Ground Flower":"2026-10-21","Calypso||Punk Rock OG Ground Flower":"2026-10-21","Calypso||Kaleidoscope Ground Flower":"2026-10-21","Calypso||Hall Pass Whole Flower":"2026-10-21","Grassroots||Spiced Grapefruit Smalls":"2026-10-23","Grassroots||Astro GMO Whole Flower":"2026-10-23","Grassroots||Gahlic Cooks Whole Flower":"2026-10-23","Find.||The Chef Whole Flower":"2026-10-23","Grassroots||Astro GMO Small Buds":"2026-10-23","Grassroots||Foreign Fuel Whole Flower":"2026-10-23","Grassroots||Wannabe Boof Small Buds":"2026-10-23","Grassroots||Novarine Small Buds":"2026-10-23","Find.||Blue Kool Whole Flower":"2026-10-23","Grassroots||Foreign Fuel Smalls":"2026-10-23","Grassroots||Problem Child Small Buds":"2026-10-23","Grassroots||Gahlic Cooks Small Buds":"2026-10-23","Grassroots||Cap Junky Whole Flower":"2026-10-23","Grassroots||Daybreak Delight Small Buds":"2026-10-23","Grassroots||Problem Child Whole Flower":"2026-10-23","Find.||Candid App Whole Flower":"2026-10-23","Find.||Permanent Marker Whole Flower":"2026-10-23","Find.||Candid App Smalls":"2026-10-23","Stash||Planet Red Whole Flower":"2026-10-24","Standard Farms||Lemon Puree Infused Ground Flower":"2026-10-24","FarmaceuticalRX||M.A.C. #5 Whole Flower":"2026-10-25","Supply||Tangiberto Ground Flower":"2026-10-26","Supply||Nectarine Jlly Ground Flower":"2026-10-26","Supply||Triangle OG Kush Breath Ckies Ground Flower":"2026-10-26","Modern Flower||Jet Fuel Whole Flower":"2026-10-26","Supply||Chemex Ground Flower":"2026-10-26","Modern Flower||Mint Condition Whole Flower":"2026-10-26","Modern Flower||Tropicana Haze Whole Flower":"2026-10-26"},"known":["Alien Labs||XJ-13 Whole Flower","Standard Farms||Biscotti Fizz Infused Ground Flower","Standard Farms||Tengu Infused Ground Flower","Alien Labs||Violet Night Whole Flower","Dark Heart||Titan Express Whole Flower","Standard Farms||Flow State  Infused Ground Flower","FarmaceuticalRX||Scroopy Noopers Whole Flower","Strane||10G's Whole Flower","FarmaceuticalRX||Scroopy Noopers Whole Flower","Dark Heart||Icy Grapes Whole Flower","Find.||Some Pulp Whole Flower","Find.||Nuclear Burst Whole Flower","Alien Labs||Area 41 Whole Flower","Organic Remedies||Peach Maraccino Whole Flower","Dark Heart||Foreign Kush Mints Whole Flower","Connected||Biscotti Whole Flower","Alien Labs||Biskante  Whole Flower","Grassroots||Jah Chee Ck Whole Flower","Organic Remedies||MRBE Whole Flower","Organic Remedies||Yellow Sunshine Whole Flower","Savvy||Space Mintz Whole Flower","Connected||Ambrozia Whole Flower","Find.||Pelirroja Whole Flower","Modern Flower||Soul Safari Whole Flower","Cresco||Jokerz Whole Flower","Cresco||Mango Mintality Small Buds","Good Green||Living Legend Mixed Buds","RYTHM||Animal Face Whole Flower","Grassroots||Golden Sands Whole Flower","Eleven VIP||Melted Strawberries Whole Flower","Find.||Melon Nebula Whole Flower","Prime Wellness||Scarlet Fire #7 Whole Flower","Connected||Gelato 41 Whole Flower","Grassroots||Golden Sands Small Buds","Grassroots||Water Ck Small Buds","Supply||Cherry AK Whole Flower","Grassroots||Ocifer 3 (Pawpaw) Whole Flower","Strane||Orange Slice Legend Whole Flower","Dark Heart||Zesty Gahlic Cooks Whole Flower","Modern Flower||Chemdawg Whole Flower","Find.||Wrong Holler Whole Flower","RYTHM||Mystic Mint Mixed Buds","Eleven||Offendo Whole Flower","Grassroots||Wild Garlic Whole Flower","Find.||Agent Z Whole Flower","Find.||Unbroken Chain Whole Flower","Find.||Rainbow Slide Whole Flower","Find.||Chem Jawn Whole Flower","Eleven VIP||Tropicana C Whole Flower","Supply||Red Berries Whole Flower","INSA||Blueberry Gas Whole Flower","FarmaceuticalRX||Walkabout Whole Flower","Eleven||Blue RNTZ Whole Flower","Supply||Slurty3 Whole Flower","Calypso||Dank Side Whole Flower","Good Green||APPL CBL Mixed Buds","Cresco||LCP Whole Flower","Cresco||Crown Whole Flower","RYTHM||Glookies Whole Flower","Dark Heart||Moon Beam Gelato Whole Flower","Strane||Banana CP Whole Flower","Mood||Grandaddy Durban Whole Flower","Grassroots||Wild Garlic Small Buds","Find.||Bulbz Whole Flower","Supply||Chimera Junky Whole Flower","Supply||Mango Mintality Whole Flower","INSA||Moonraker Whole Flower","Eden's Trees||Wingsuit Whole Flower","RYTHM||BRWN E SCT Mixed Buds","Cresco||LCP Small Buds","FarmaceuticalRX||Carbon Fiber Whole Flower","Eden's Trees||Super Star Whole Flower","Dark Heart||Sugar Kushions Whole Flower","RYTHM||Cherry Maui Wowie Whole Flower","FloraCal||Outlaw Whole Flower","RYTHM||Afternoon Delight #4 Whole Flower","Cresco||Chemex Whole Flower","FarmaceuticalRX||Chem Flyer #3 Whole Flower","Good Green||Funk Bomb Mixed Buds","Find.||Mufftin Bomb Whole Flower","Cresco||Slow N Sweet Small Buds","Eden's Trees||Soureen 16 Whole Flower","Find.||Junkyard Rail Whole Flower","Find.||Gslt Whole Flower","Rntz||Rntz OG Whole Flower","Supply||Peanut Butter Breath Whole Flower","Find.||Rsbry Trnver Whole Flower","Find.||Mystic Funk Whole Flower","Find.||Bluejack Whole Flower","Cresco||Billy Ocean Whole Flower","Calypso||Citrus Kush Royale Whole Flower","Cresco||Chaos Kush Whole Flower","Eden's Trees||Cadillac Rainbows Whole Flower","Cresco||Chaos Kush Small Buds","Supply||Maltese Orange Ckies Small Buds","Supply||Slurty3 Small Flower","Supply||Triangle OG Kush Breath Ckies Small Buds","Find.||Baya Dulce Whole Flower","Cresco||GMO Pop Small Buds","Grassroots||White Hot Guava Whole Flower","Eleven||Sunday Sauce Whole Flower","Modern Flower||Holy Grail Kush x Dark RainB Ground Flower","Supply||Kush Crasher Small Buds","Terrapin||Thug Roze Whole Flower","Calypso||Kush Pounder Whole Flower","Grassroots||Daybreak Delight Whole Flower","Organic Remedies||Strawberry Banner Whole Flower","Find.||Cool Bite Whole Flower","Modern Flower||Gelonade Whole Flower","Cresco||Green Line OG Whole Flower","Find.||Dominaer Whole Flower","Organic Remedies||Yuk Mouth Whole Flower","INSA||Vybz Whole Flower","Strane||Red Vel Vet Runz #9 Whole Flower","Cresco||Black Maple Whole Flower","Supply||Cherry AK Small Buds","Supply||LCP Whole Flower","Eleven||Intergalactic Whole Flower","Good Green||Gazzurple Mixed Buds","Cresco||Billy Ocean Small Buds","Calypso||Sunset 41 Whole Flower","Savvy||Modified Grapes Small Buds","Find.||Nuclear Nectar Whole Flower","Supply||Triangle Gelato Whole Flower","Supply||Grapefruit Bubble Small Buds","Supply||Black Maple Whole Flower","Dark Heart||Blackened Blue Whole Flower","INSA||Animal Alien Mnts Whole Flower","Supply||Madd Fruit Whole Flower","Grassroots||Animal Mnt Ck Whole Flower","Eden's Trees||AK Whole Flower","Calypso||River Spirit Whole Flower","Supply||Director's Cut Whole Flower","Cresco||Black Maple Small Buds","Supply||Billy Ocean Small Buds","Grassroots||Wannabe Boof Whole Flower","RYTHM||Granny CNDY Whole Flower","Supply||Mountain Apple Small Buds","Calypso||Apple-lato Whole Flower","FloraCal||Outlaw Small Buds","Cresco||Lime Sorbet Small Buds","Supply||Blue Nrds Small Buds","Connected||Ghost OG Whole Flower","Cresco||GMO Pop Whole Flower","SeCHe||Black Amber Ground Flower","Cresco||8\" Bagel Small Buds","Supply||8\" Bagel Ground Flower","Supply||Legacy Whole Flower","Grassroots||Water Ck Whole Flower","Calypso||Catalyst Whole Flower","Modern Flower||GMOlato Whole Flower","Modern Flower||Pineapple Upside Down K Whole Flower","Kind Tree||Straw-Picanna Whole Flower","INSA||Mac 1 Whole Flower","Supply||Legacy Small Buds","Modern Flower||Sour Gremlin Whole Flower","Modern Flower||Holy Grail Kush Whole Flower","Grassroots||Animal Mnt Ck Small Buds","RYTHM||BRWN E Points Whole Flower","Good Green||Grape Stomper Mixed Buds","Cresco||Nectarine Jlly Whole Flower","Find.||Tourist Trap Whole Flower","Cresco||Nectarine Jlly Small Buds","Supply||Bob Hope Small Buds","Cresco||Triangle OG Kush Breath Ckies Small Buds","Grassroots||Ah Pul T Whole Flower","Cresco||Outlaw Whole Flower","Mood||Strawberry Pines Whole Flower","Savvy||Space Mintz Small Buds","Supply||Gassius' Retreat Small Buds","Savvy||Minty Haze Whole Flower","Calypso||LC Sherb Whole Flower","Backyard||Floral Notes Ground Flower","Calypso||Heavy Duty Fruity Whole Flower","Cresco||Guava Street Guru Whole Flower","Terrapin||Larry's Helmet #3 Whole Flower","Find.||Singapore Sling Whole Flower","Good Green||CHCKN N WFFLZ Mixed Buds","Terrapin||Jack's Clone Whole Flower","Modern Flower||Whoopie P Whole Flower","Backyard||Frosted Shade Ground Flower","Savvy||Sugar Sap Whole Flower","Savvy||ScoutZ Whole Flower","Find.||Garlic Gold Rush #16 Whole Flower","Supply||Burnt Orange Whole Flower","Modern Flower||Fruit Gushers Whole Flower","Cresco||LCG BX1 Small Buds","Kind Tree||Tri State Black Banana Small Buds","Supply||Bob Hope Whole Flower","Supply||Billy Ocean Ground Flower","Supply||Chemex Small Buds","SeCHe||Stun Spore Ground Flower","SeCHe||Ched Chee Ground Flower","Cresco||Kush Crasher Small Buds","Find.||Ridgelion 7 Whole Flower","Good Green||Secret Sunset Mixed Buds","Supply||Green Line OG Ground Flower","Supply||WC Watermelon Z Ground Flower","Supply||Truffle Kush Ground Flower","Find.||Melon Comp Whole Flower","Supply||814 Fireworks Ground Flower","Supply||Gelonade Smthie Ground Flower","Supply||Director's Cut Small Buds","Supply||Indigo Ground Flower","Backyard||Amber Dusk Ground Flower","Supply||707 Headband Infused Ground Flower","Good Green||Sour Cherry Melon Mixed Buds","Supply||Chimera Junky Small Buds","(the) Essence||Minty Haze Whole Flower","Supply||Guava Street Guru Small Buds","Good Green||Suite Stripes Mixed Buds","Supply||sMACkin Ground Flower","Supply||The Bling Ground Flower","Supply||Petrol Pine Ground Flower","Supply||Cherry AK Infused Ground Flower","Supply||LCP Ground Flower","Supply||Mountain Apple Ground Flower","Supply||Slow N Sweet Ground Flower","Supply||Flash Point Ground Flower","Find.||Berry Medley Whole Flower","Strane||UvBnBn Whole Flower"]};
+var API='https://web-ui-curaleaf.sweedpos.com/_api/proxy/',STORE='153',TTL=6*3600e3,KEY='curaleafLive.v1';
+var BASE='https://curaleaf.com/shop/pennsylvania/curaleaf-pa-harrisburg/menu/flower-1287/';
+var st=document.getElementById('status'),pg=document.getElementById('pg'),app=document.getElementById('app'),tbl=document.getElementById('tw');
+function esc(x){return String(x==null?'':x).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function r2(x){return Math.round(x*100)/100}
+function dp(v){var a=(v.promoPrice!=null&&v.promoPrice>0)?v.promoPrice:v.price;return r2(Math.min(a,v.price*0.55))}
+function slug(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
+function post(ep,b){return fetch(API+ep,{method:'POST',headers:{'content-type':'application/json',storeid:STORE},body:JSON.stringify(b)}).then(function(r){if(!r.ok)throw new Error(ep+' HTTP '+r.status);return r.json()})}
+function retry(f){return f().catch(function(){return new Promise(function(res){setTimeout(res,600)}).then(f)})}
+function ago(ms){var m=Math.round(ms/60000);return m<1?'just now':m<60?m+' min ago':Math.round(m/6)/10+' h ago'}
+function setStatus(html,err){st.className=err?'err':'';st.innerHTML=html}
+function getCache(){try{var c=JSON.parse(localStorage.getItem(KEY));return c&&c.recs&&c.recs.length?c:null}catch(e){return null}}
+function putCache(c){try{localStorage.setItem(KEY,JSON.stringify(c))}catch(e){}}
+function fetchAll(){
+ var L=[],total=0;
+ function page(n){return retry(function(){return post('Products/GetProductList',{pageSize:400,page:n,filters:{category:[1287]},sortingMethodId:1,saleType:'Medical',platformOs:'web'})}).then(function(j){
+  total=j.total;L=L.concat(j.list||[]);if(L.length<total&&(j.list||[]).length)return page(n+1)})}
+ return page(1).then(function(){
+  if(!L.length)throw new Error('empty menu');
+  var recs=L.map(function(it){
+   var pt=it.productType&&it.productType.name||'',prev=it.strain&&it.strain.prevalence?it.strain.prevalence.canonicalName:'';
+   var vs=it.variants.slice().sort(function(a,b){return dp(a)-dp(b)||a.id-b.id}),best=vs[0];
+   var sizes=it.variants.slice().sort(function(a,b){return parseFloat(b.name)-parseFloat(a.name)}).map(function(v){return v.name.toLowerCase()});
+   var sub=it.subcategory&&it.subcategory.canonicalName;
+   return {brand:it.brand&&it.brand.name||'',name:(it.name+' '+pt).trim(),type:prev?prev[0].toUpperCase()+prev.slice(1):'',vid:best.id,
+    link:[sub,prev,it.canonicalName,slug(pt),best.name.toLowerCase().replace('.',''),best.id].filter(Boolean).join('-'),
+    sizes:sizes,price:dp(best),orig:best.price,deal:dp(best)<best.price?'from $'+dp(best).toFixed(2):'',thc:null,terps:null,tops:[],lab:false};
+  });
+  var i=0,done=0,fails=0;pg.max=recs.length;pg.value=0;pg.hidden=false;
+  setStatus('Loading lab data… <span id="cnt">0</span> / '+recs.length);
+  function worker(){if(i>=recs.length)return Promise.resolve();var r=recs[i++];
+   return retry(function(){return post('Products/GetExtendedLabdata',{variantId:r.vid})}).then(function(d){
+    var tv=(d.terpenes&&d.terpenes.values)||[],hv=(d.thc&&d.thc.values)||[];
+    var T=tv.filter(function(x){return /^total terpenes$/i.test(x.name)})[0],H=hv.filter(function(x){return /^total thc$/i.test(x.name)})[0];
+    r.terps=T&&T.max!=null?T.max:null;r.thc=H&&H.max!=null?H.max:null;
+    r.tops=tv.filter(function(x){return !/^total terpenes$/i.test(x.name)&&x.max!=null}).sort(function(a,b){return b.max-a.max}).slice(0,4).map(function(x){return [x.name,Math.round(x.max*1000)/1000]});
+    r.lab=true}).catch(function(){fails++}).then(function(){done++;pg.value=done;var c=document.getElementById('cnt');if(c)c.textContent=done;return worker()})}
+  var ws=[];for(var k=0;k<8;k++)ws.push(worker());
+  return Promise.all(ws).then(function(){pg.hidden=true;return {t:Date.now(),recs:recs,fails:fails}});
+ });
+}
+var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function fmt(d){var p=d.split('-');return MON[+p[1]-1]+' '+(+p[2])}
+function today(){var d=new Date();return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)}
+var KNOWN=null,LOC={};
+function addedFor(r){var k=r.brand+'||'+r.name;
+ if(FS.first[k])return [FS.first[k],fmt(FS.first[k])];
+ if(!KNOWN){KNOWN={};FS.known.forEach(function(x){KNOWN[x]=1})}
+ if(KNOWN[k])return [FS.base,'by '+fmt(FS.base)];
+ if(!LOC[k])LOC[k]=today();
+ return [LOC[k],fmt(LOC[k])+' (seen)']}
+function render(c,note){
+ try{LOC=JSON.parse(localStorage.getItem('curaleafLive.seen')||'{}')}catch(e){LOC={}}
+ var recs=c.recs.slice().sort(function(a,b){return (b.terps==null?-1:b.terps)-(a.terps==null?-1:a.terps)||a.name.localeCompare(b.name)});
+ var rows=recs.map(function(r){
+  var tops=r.tops.map(function(x){return x[0]+' '+x[1]}).join('; ');
+  var cells=['',esc(r.brand),'<a href="'+BASE+esc(r.link)+'" target="_blank" rel="noopener">'+esc(r.name)+'</a>',esc(r.type),esc(r.sizes.join(' / ')),'$'+r.price.toFixed(2),'$'+r.orig.toFixed(2),esc(r.deal),'@@A',r.thc==null?'':String(r.thc),r.terps==null?'':String(r.terps),esc(tops)];
+  var a=addedFor(r);return '<tr>'+cells.map(function(x){return x==='@@A'?'<td data-v="'+a[0]+'">'+a[1]+'</td>':'<td>'+x+'</td>'}).join('')+'</tr>';
+ }).join('');
+ try{localStorage.setItem('curaleafLive.seen',JSON.stringify(LOC))}catch(e){}
+ tbl.innerHTML='<table id="t">'+THEAD+rows+'</table>';
+ app.hidden=false;
+ var miss=c.recs.filter(function(r){return r.terps==null}).length;
+ setStatus('<span>'+recs.length+' products, loaded '+ago(Date.now()-c.t)+(note?' ('+note+')':'')+'.</span>'+(miss?'<span>'+miss+' without lab data.</span>':'')+'<button type="button" id="rf">Refresh</button>');
+ document.getElementById('rf').addEventListener('click',function(){try{localStorage.removeItem(KEY)}catch(e){}location.reload()});
+ window.initTable();
+}
+var THEAD="<tr><th data-col=\"rank\" data-sort=\"reset\">#</th><th data-col=\"brand\" data-sort=\"s\" data-first=\"asc\">Brand</th><th data-col=\"product\" data-sort=\"s\" data-first=\"asc\">Product</th><th data-col=\"type\" data-sort=\"s\" data-first=\"asc\">Type</th><th data-col=\"sizes\" data-sort=\"n\" data-first=\"asc\">Sizes</th><th data-col=\"price\" data-sort=\"n\" data-first=\"asc\">Price</th><th data-col=\"was\" data-sort=\"n\" data-first=\"asc\">Was</th><th data-col=\"deal\" data-sort=\"s\" data-first=\"asc\">Deal</th><th data-col=\"added\" data-sort=\"s\" data-first=\"desc\">Added</th><th data-col=\"thc\" data-sort=\"n\" data-first=\"desc\">THC %</th><th data-col=\"terps\" data-sort=\"n\" data-first=\"desc\">Terps %</th><th data-col=\"tops\">Top terpenes</th></tr>";
+function start(){
+ var c=getCache();
+ if(c&&Date.now()-c.t<TTL){render(c,'saved copy');return}
+ setStatus('Loading the menu…');pg.hidden=false;pg.removeAttribute('value');
+ try{if(navigator.wakeLock)navigator.wakeLock.request('screen').catch(function(){})}catch(e){}
+ fetchAll().then(function(n){putCache(n);render(n,n.fails?n.fails+' lab lookups failed':'')}).catch(function(e){
+  pg.hidden=true;
+  if(c){render(c,'could not refresh, showing older copy')}
+  else setStatus('Could not load the Curaleaf menu ('+esc(e.message)+'). Check your connection. <button type="button" id="rt">Try again</button>',true),document.getElementById('rt').addEventListener('click',function(){location.reload()});
+ });
+}
+(function(){var ms=document.getElementById('ms'),md=document.getElementById('md');
+ function th(c){return document.querySelector('th[data-col="'+c+'"]')}
+ ms.addEventListener('change',function(){var c=ms.value;if(!c){th('rank').click();return}th(c).click()});
+ md.addEventListener('click',function(){var c=ms.value;if(c)th(c).click()});
+ try{if(window.matchMedia('(max-width:640px)').matches)document.getElementById('flt').open=false}catch(e){}})();
+start();
+})();
+</script>
+</body></html>
