@@ -1,6 +1,13 @@
 {
 "base": "2026-10-26",
-"first": {},
+"first": {
+"FarmaceuticalRX||M.A.C. Whole Flower": "2026-10-27",
+"Prime Wellness||Chocolate Cherry OG #1 Whole Flower": "2026-10-27",
+"Prime Wellness||Mint Sherb Whole Flower": "2026-10-27",
+"Prime Wellness||Rose Fuzz #9 Small Buds": "2026-10-27",
+"Prime Wellness||Urban Legend #24 Whole Flower": "2026-10-27",
+"RYTHM||Cherry Maui Wowie Whole Flower": "2026-10-27"
+},
 "known": [
 "&Shine||APPL CBL Infused Ground Flower",
 "&Shine||Black Maple Infused Ground Flower",

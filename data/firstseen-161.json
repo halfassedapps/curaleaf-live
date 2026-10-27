@@ -1,6 +1,13 @@
 {
 "base": "2026-10-26",
-"first": {},
+"first": {
+"Cresco||Black Maple Whole Flower": "2026-10-27",
+"Cresco||Burnt Orange Whole Flower": "2026-10-27",
+"Modern Flower||Admiral Apple Whole Flower": "2026-10-27",
+"Supply||Crown Ground Flower": "2026-10-27",
+"Supply||GMO Pop Ground Flower": "2026-10-27",
+"Supply||Strawberry Barbara Ground Flower": "2026-10-27"
+},
 "known": [
 "(the) Essence||Minty Haze Whole Flower",
 "Alien Labs||Area 41 Whole Flower",
