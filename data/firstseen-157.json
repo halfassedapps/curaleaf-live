@@ -1,8 +1,12 @@
 {
 "base": "2026-10-26",
 "first": {
+"&Shine||Dulce De Uva Infused Ground Flower": "2026-10-30",
+"&Shine||Hybrid Ground Flower": "2026-10-30",
+"&Shine||Sativa Ground Flower": "2026-10-30",
 "Backyard||Prune Drip Ground Flower": "2026-10-28",
 "Calypso||Kush Pounder Ground Flower": "2026-10-27",
+"Cresco||Burnt Orange Whole Flower": "2026-10-30",
 "Dark Heart||Delphi Diesel Whole Flower": "2026-10-29",
 "Find.||Chem Student Whole Flower": "2026-10-29",
 "Find.||Citrus Grenade Whole Flower": "2026-10-29",
@@ -11,6 +15,7 @@
 "Find.||Fried Platanos Whole Flower": "2026-10-29",
 "Find.||Lunar Drift Whole Flower": "2026-10-29",
 "Find.||Royal Highness Whole Flower": "2026-10-29",
+"Good Green||Strawberry Guava Mixed Buds": "2026-10-30",
 "Grassroots||Dulce de Uva Whole Flower": "2026-10-29",
 "Grassroots||La Vida Whole Flower": "2026-10-29",
 "Grassroots||Pineapple Cke Whole Flower": "2026-10-29",
@@ -21,10 +26,14 @@
 "Prime Wellness||Gasoline Tropsicle Whole Flower": "2026-10-27",
 "Prime Wellness||Papa Legba #8 Whole Flower": "2026-10-27",
 "Prime Wellness||Urban Legend #24 Whole Flower": "2026-10-27",
+"RYTHM||BNANA CRM Whole Flower": "2026-10-30",
+"RYTHM||Chem Scout '87 Whole Flower": "2026-10-30",
+"Supply||814 Fireworks Ground Flower": "2026-10-30",
 "Supply||Blue Nrds Whole Flower": "2026-10-29",
 "Supply||Crown Ground Flower": "2026-10-29",
 "Supply||GMO Pop Ground Flower": "2026-10-29",
-"Supply||Strawberry Barbara Ground Flower": "2026-10-29"
+"Supply||Strawberry Barbara Ground Flower": "2026-10-29",
+"Terrapin||NYC Sour Diesel Whole Flower": "2026-10-30"
 },
 "known": [
 "&Shine||APPL CBL Infused Ground Flower",
