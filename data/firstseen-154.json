@@ -2,6 +2,10 @@
 "base": "2026-10-26",
 "first": {
 "&Shine||Dulce De Uva Infused Ground Flower": "2026-10-29",
+"Calypso||Fluff Fumez Ground Flower": "2026-11-04",
+"Calypso||Hall Pass Whole Flower": "2026-11-04",
+"Calypso||Kaleidoscope Ground Flower": "2026-11-04",
+"Calypso||Vegan Chz Ground Flower": "2026-11-04",
 "Dark Heart||Delphi Diesel Whole Flower": "2026-11-02",
 "Dark Heart||Trip Stack Whole Flower": "2026-11-02",
 "Find.||Chem Student Whole Flower": "2026-11-02",
@@ -15,6 +19,7 @@
 "Grassroots||La Vida Whole Flower": "2026-11-01",
 "Grassroots||Pineapple Cke Whole Flower": "2026-11-01",
 "Grassroots||Triple Mntz Whole Flower": "2026-11-01",
+"INSA||Mac 1 Whole Flower": "2026-11-04",
 "Modern Flower||Jet Fuel Whole Flower": "2026-10-28",
 "Modern Flower||Mint Condition Whole Flower": "2026-10-28",
 "Modern Flower||Tropicana Haze Whole Flower": "2026-10-28",
@@ -32,7 +37,8 @@
 "RYTHM||Gas Guzzler #8 Whole Flower": "2026-10-29",
 "Supply||Crown Ground Flower": "2026-11-03",
 "Supply||Strawberry Barbara Ground Flower": "2026-11-03",
-"Supply||West Coast Diesel Whole Flower": "2026-11-02"
+"Supply||West Coast Diesel Whole Flower": "2026-11-02",
+"Terrapin||Jack's Clone Infused Ground Flower": "2026-11-04"
 },
 "known": [
 "&Shine||Black Maple Infused Ground Flower",
